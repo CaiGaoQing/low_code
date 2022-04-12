@@ -45,7 +45,6 @@ public class DynamicConfig implements ApplicationContextAware {
              */
             try {
                 SqlSessionFactory bean = applicationContext.getBean(SqlSessionFactory.class);
-//                moduleApplication().reloadJar(new URL(dynamicJar),applicationContext,bean);
             } catch (Exception e) {
                 e.printStackTrace();
             }

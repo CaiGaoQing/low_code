@@ -1,6 +1,5 @@
 package com.techhf.runtime.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperEntityResolver;
 import org.apache.ibatis.executor.ErrorContext;
@@ -19,9 +18,10 @@ import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@Slf4j
+
 public class MapperLoader {
 
+	private Logger logger = LoggerFactory.getLogger(MapperLoader.class);
 
     private Configuration configuration;
 
@@ -31,7 +31,7 @@ public class MapperLoader {
      * @param xmlBytesMap
      * @return
      */
-    public Map<String,Object> refresh(SqlSessionFactory sqlSessionFactory, Map<String, byte[]> xmlBytesMap) {
+    public Map<String,MapperFactoryBean> refresh(SqlSessionFactory sqlSessionFactory, Map<String, byte[]> xmlBytesMap) {
         Configuration configuration = sqlSessionFactory.getConfiguration();
         this.configuration = configuration;
 
@@ -39,7 +39,7 @@ public class MapperLoader {
          * 这里用来区分mybatis-plus和mybatis，mybatis-plus的Configuration是继承自mybatis的子类
          */
         boolean isSupper = configuration.getClass().getSuperclass() == Configuration.class;
-        Map<String,Object> mapperMap = new HashMap<>();
+        Map<String,MapperFactoryBean> mapperMap = new HashMap<>();
         try {
             /**
              * 遍历外部传入的xml字节码map
@@ -77,6 +77,7 @@ public class MapperLoader {
                 Map mapConfig = (Map) field.get(configuration.getMapperRegistry());
                 /**
                  * 拿到Mapper接口对应的class对象
+                 *
                  */
                 Class nsClass = Resources.classForName(namespace);
 
@@ -113,12 +114,12 @@ public class MapperLoader {
                  * 放入map，返回出去给ModuleApplication去加载
                  */
                 mapperMap.put(namespace,mapperFactoryBean);
-                log.info("refresh: '" + resource + "', success!");
+                logger.info("refresh: '" + resource + "', success!");
 
             }
             return mapperMap;
         } catch (Exception e) {
-            log.error("refresh error",e.getMessage());
+            logger.error("refresh error",e.getMessage());
         } finally {
             ErrorContext.instance().reset();
         }

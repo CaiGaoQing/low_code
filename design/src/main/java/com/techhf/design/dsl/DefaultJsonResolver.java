@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 /**
- * 默认的json解析器,
+ * 不是代理，防止线程安全性问题，默认的json解析器,
  * @getFormInfo 返回一个FormInfo对象，获取表单信息
  * @getSchema 返回JSON表单信息
  * @getColumn 返回表单的所有字段信息
