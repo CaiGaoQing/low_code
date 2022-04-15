@@ -31,6 +31,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <swagger2.version>2.9.2</swagger2.version>
+        <flowable.version>6.4.0</flowable.version>
     </properties>
 
     <modules>
@@ -83,6 +84,17 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
+            <!--flowable-->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-process</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-actuator</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.techhf</groupId>

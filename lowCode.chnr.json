@@ -1,0 +1,1071 @@
+{
+  "name": "lowCode",
+  "describe": "lowCode",
+  "avatar": "",
+  "version": "3.5.7",
+  "createdTime": "2022-4-12 11:25:11",
+  "updatedTime": "2022-4-12 13:18:33",
+  "profile": {
+    "default": {
+      "db": "9D718771-0A06-4FAB-A02B-DFD277226DE9",
+      "dbConn": "",
+      "entityInitFields": [
+        {
+          "defKey": "tenant_id",
+          "defName": "租户号",
+          "comment": "",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "refDict": "",
+          "uiHint": "",
+          "id": "28051B6F-25CB-4429-8BA8-85C44B3BE185"
+        },
+        {
+          "defKey": "created_by",
+          "defName": "创建人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "F0A40FBF-33BE-4A0B-BE86-19C20AF72C30"
+        },
+        {
+          "defKey": "created_time",
+          "defName": "创建时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "0097B184-5CCE-4CF8-9009-DD10591F2520"
+        },
+        {
+          "defKey": "updated_by",
+          "defName": "更新人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "90611E9F-9431-485F-9E91-DD7F4E7F4DC9"
+        },
+        {
+          "defKey": "updated_time",
+          "defName": "更新时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "DEE73D2C-1964-49E6-947F-621AC4430BF0"
+        }
+      ],
+      "entityInitProperties": {}
+    },
+    "sql": {
+      "delimiter": ""
+    },
+    "dataTypeSupports": [
+      {
+        "defKey": "MYSQL",
+        "id": "9D718771-0A06-4FAB-A02B-DFD277226DE9"
+      },
+      {
+        "defKey": "ORACLE",
+        "id": "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF"
+      },
+      {
+        "defKey": "SQLServer",
+        "id": "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2"
+      },
+      {
+        "defKey": "PostgreSQL",
+        "id": "BCCC33D4-7BA4-40B9-8482-149BD0EF1478"
+      },
+      {
+        "defKey": "DB2",
+        "id": "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B"
+      },
+      {
+        "defKey": "DM",
+        "id": "103A5DA1-FF48-4A6B-9DC2-28B6450F110E"
+      },
+      {
+        "defKey": "GaussDB",
+        "id": "44596C48-A91F-416E-A210-E7464A1DC34A"
+      },
+      {
+        "defKey": "Kingbase",
+        "id": "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93"
+      },
+      {
+        "defKey": "MaxCompute",
+        "id": "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA"
+      },
+      {
+        "defKey": "JAVA",
+        "id": "094E0025-AA6D-4A76-896A-B6E5D97488AD"
+      },
+      {
+        "defKey": "C#",
+        "id": "9850638E-622C-4FA9-AD17-DF2FA1D1826D"
+      },
+      {
+        "defKey": "SQLite",
+        "id": "F0D16207-16CD-41B1-B6FA-90C18B591E8C"
+      }
+    ],
+    "codeTemplates": [
+      {
+        "type": "dbDDL",
+        "applyFor": "9D718771-0A06-4FAB-A02B-DFD277226DE9",
+        "isDefault": true,
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'AUTO_INCREMENT' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }} COMMENT '{{=it.func.join(field.defName,field.comment,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n)  COMMENT = '{{=it.func.join(it.entity.defName,it.entity.comment,';') }}';\n$blankline\n",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF",
+        "isDefault": true,
+        "createTable": "CREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? '' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2",
+        "isDefault": true,
+        "createTable": "IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{{=it.entity.defKey}}]') AND type in (N'U'))\nDROP TABLE [dbo].[{{=it.entity.defKey}}];\n\nCREATE TABLE [dbo].[{{=it.entity.defKey}}](\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? ' IDENTITY(1,1)' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n){{=it.separator}}\n$blankline\n{{? it.entity.defKey || it.entity.defName}}EXEC sp_addextendedproperty 'MS_Description', '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}', 'SCHEMA', dbo, 'table', {{=it.entity.defKey}}, null, null;{{?}}\n{{~it.entity.fields:field:index}}\nEXEC sp_addextendedproperty 'MS_Description', '{{=it.func.join(field.defName,field.comment,';')}}', 'SCHEMA', dbo, 'table', {{=it.entity.defKey}}, 'column', {{=field.defKey}};\n{{~}}\n",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "BCCC33D4-7BA4-40B9-8482-149BD0EF1478",
+        "isDefault": true,
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? ' AUTO_INCREMENT' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "appCode",
+        "applyFor": "094E0025-AA6D-4A76-896A-B6E5D97488AD",
+        "isDefault": true,
+        "content": "package cn.com.chiner.entity;\n$blankline\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n{{\n    var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n}}\n /**\n * @author : http://www.chiner.pro\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n * @desc : {{=it.func.join(it.entity.defName,it.entity.comment,'-')}}\n */\n@Table(name=\"{{=it.entity.defKey}}\")\npublic class {{=it.func.camel(it.entity.defKey,true) }} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    {{? field.primaryKey }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.defKey,false)}} ;\n{{~}}\n$blankline\n\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.defKey,true)}}(){\n        return this.{{=it.func.camel(field.defKey,false)}};\n    }\n    /** {{=it.func.join(field.defName,field.comment,';')}} */\n    public void set{{=it.func.camel(field.defKey,true)}}({{=field.type}} {{= it.func.camel(field.defKey,false) }}){\n        this.{{=it.func.camel(field.defKey,false)}}={{=it.func.camel(field.defKey,false)}};\n    }\n{{~}}\n}"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B",
+        "isDefault": true,
+        "createTable": "CREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? '' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "103A5DA1-FF48-4A6B-9DC2-28B6450F110E",
+        "isDefault": true,
+        "createTable": "CREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? '' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT ','('+field.defaultValue+')',' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "appCode",
+        "applyFor": "9850638E-622C-4FA9-AD17-DF2FA1D1826D",
+        "isDefault": true,
+        "content": "using System;\nusing System.Collections.Generic;\n\n$blankline\n{{\n    var today=new Date();\n    var fullYear=today.getFullYear();\n    var month=today.getMonth() + 1;\n    var days=today.getDate();\n}}\n/*\n * @author : http://www.chiner.com.cn\n * @date : {{=fullYear}}-{{=month}}-{{=days}}\n * @desc : {{=it.func.join(it.entity.defName,it.entity.comment,'-')}}\n */\nnamespace Chiner.Application\n{\n    public partial class {{=it.func.camel(it.entity.defKey,true) }}\n    {\n    \n        {{~it.entity.fields:field:index}}\n        /// <summary>\n        /// {{=it.func.join(field.defName,field.comment,';')}}\n        /// </summary>\n        public {{=field.type}} {{=it.func.camel(field.defKey,true)}} { get; set; }\n        $blankline\n        {{~}}\n        \n    }\n}"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "44596C48-A91F-416E-A210-E7464A1DC34A",
+        "isDefault": true,
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= field.autoIncrement ? ' AUTO_INCREMENT' : '' }}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93",
+        "isDefault": true,
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{= field.defaultValue ? it.func.join(' DEFAULT ',field.defaultValue,' ') : '' }}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);\n$blankline\n{{? it.entity.defKey || it.entity.defName}}COMMENT ON TABLE {{=it.entity.defKey}} IS '{{=it.func.join(it.entity.defName,it.entity.comment,';')}}';{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.defName || field.comment}}COMMENT ON COLUMN {{=it.entity.defKey}}.{{=field.defKey}} IS '{{=it.func.join(field.defName,field.comment,';')}}';{{?}}\n{{~}}",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "dictSQLTemplate",
+        "isDefault": true,
+        "content": "/* 插入字典总表[{{=it.dict.defKey}}-{{=it.dict.defName}}] */\nINSERT INTO SYS_DICT(KEY_,LABEL,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=it.dict.defName}}','{{=it.dict.intro}}',1);\n/* 插入字典明细表 */\n{{~it.dict.items:item:index}}\nINSERT INTO SYS_DICT_ITEM(DICT_KEY,KEY_,LABEL,SORT_,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=item.defKey}}','{{=item.defName}}','{{=item.sort}}','{{=item.intro}}',1);\n{{~}}"
+      },
+      {
+        "type": "dbDDL",
+        "applyFor": "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA",
+        "isDefault": true,
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'AUTO_INCREMENT' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }} COMMENT '{{=it.func.join(field.defName,field.comment,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n)  COMMENT = '{{=it.func.join(it.entity.defName,it.entity.comment,';') }}';\n$blankline\n",
+        "createIndex": "",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      },
+      {
+        "applyFor": "F0D16207-16CD-41B1-B6FA-90C18B591E8C",
+        "type": "dbDDL",
+        "createTable": "DROP TABLE IF EXISTS {{=it.entity.defKey}};\nCREATE TABLE {{=it.entity.defKey}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.primaryKey }}{{ pkList.push(field.defKey) }}{{?}}\n    {{=field.defKey}} {{=field.type}}{{?field.len>0}}{{='('}}{{=field.len}}{{?field.scale>0}}{{=','}}{{=field.scale}}{{?}}{{=')'}}{{?}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'AUTOINCREMENT' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }} --{{=it.func.join(field.defName,field.comment,';')}}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n)  ; --{{=it.func.join(it.entity.defName,it.entity.comment,';') }}\n$blankline\n",
+        "createIndex": "{{~ it.entity.indexes:index}}\nCREATE {{? index.unique}}UNIQUE {{?}}INDEX {{=index.defKey}} ON {{=it.entity.defKey}}({{ fieldsKeys = index.fields.map(function(field){return field.fieldDefKey}) ; }}{{=it.func.join(...fieldsKeys,',')}});\n{{~}}",
+        "createView": "CREATE VIEW {{=it.view.defKey}} AS\nSELECT \n{{~it.view.fields:field:index}}\n    {{=field.refEntity}}.{{=field.refEntityField}} AS {{=field.defKey}}{{= index < it.view.fields.length-1 ? ',' : ''}}\n{{~}}\nFROM {{~it.view.refEntities:refEntity:index}}{{=refEntity}}{{= index < it.view.refEntities.length-1 ? ',' : ''}}{{~}};\n$blankline\n"
+      }
+    ],
+    "generatorDoc": {
+      "docTemplate": ""
+    },
+    "relationFieldSize": "15",
+    "uiHint": [
+      {
+        "defKey": "Input",
+        "defName": "普通输入框",
+        "id": "535ABE1F-D54C-4563-8E99-B9766E991F07"
+      },
+      {
+        "defKey": "Select",
+        "defName": "下拉输入框",
+        "id": "868EA3B1-9015-4FD7-BA62-5F8DF270E406"
+      },
+      {
+        "defKey": "CheckBox",
+        "defName": "复选框",
+        "id": "E1A610D3-1A86-4E91-86CA-9D57602C082E"
+      },
+      {
+        "defKey": "RadioBox",
+        "defName": "单选框",
+        "id": "6E8F074A-031E-4DAF-997D-B5B24D190F2D"
+      },
+      {
+        "defKey": "Double",
+        "defName": "小数输入",
+        "id": "2C54C912-8DE4-4D66-8406-0FC89D57404D"
+      },
+      {
+        "defKey": "Integer",
+        "defName": "整数输入",
+        "id": "735637DF-B103-4B29-BDD6-A171F1DF4F23"
+      },
+      {
+        "defKey": "Money",
+        "defName": "金额输入",
+        "id": "F81B65F3-DAAE-42B8-BD61-CDA14A8881FC"
+      },
+      {
+        "defKey": "Date",
+        "defName": "日期输入",
+        "id": "CC9A1F5C-50AD-41F7-AB99-F01EF9405797"
+      },
+      {
+        "defKey": "DataYearMonth",
+        "defName": "年月输入",
+        "id": "017990B3-D27B-4CBC-A869-1419EAA7729B"
+      },
+      {
+        "defKey": "Text",
+        "defName": "长文本输入",
+        "id": "E82CAB15-BB40-4D58-9B47-4CEF33D21360"
+      },
+      {
+        "defKey": "RichText",
+        "defName": "富文本输入",
+        "id": "82AA4CA7-E17A-4116-AE80-038E19A2FAE7"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "DB589D1E-5F75-45EE-A5F2-C106AB8A7D6F",
+      "defKey": "lowcode_app",
+      "defName": "应用",
+      "comment": "",
+      "properties": {},
+      "nameTemplate": "{defKey}[{defName}]",
+      "headers": [
+        {
+          "freeze": false,
+          "refKey": "hideInGraph",
+          "hideInGraph": true
+        },
+        {
+          "freeze": true,
+          "refKey": "defKey",
+          "hideInGraph": false
+        },
+        {
+          "freeze": true,
+          "refKey": "defName",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "primaryKey",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "notNull",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "autoIncrement",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "domain",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "type",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "len",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "scale",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "comment",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "refDict",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "defaultValue",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "isStandard",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "uiHint",
+          "hideInGraph": true
+        }
+      ],
+      "fields": [
+        {
+          "defKey": "app_id",
+          "defName": "应用ID",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "CEBB7FA7-A7C9-416B-B645-F4C186DBB065"
+        },
+        {
+          "defKey": "name",
+          "defName": "应用中文名称",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "702C3CB5-3C99-4C4F-B502-E55E1A32CDC7"
+        },
+        {
+          "defKey": "nick_name",
+          "defName": "应用别称",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "C14474B5-6B0C-449C-8125-201D59188A48"
+        },
+        {
+          "defKey": "icon",
+          "defName": "图标",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "54465177-25F4-4201-B240-7976B34B334E"
+        },
+        {
+          "defKey": "tenant_id",
+          "defName": "租户号",
+          "comment": "",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "refDict": "",
+          "uiHint": "",
+          "id": "A87C62D5-FD22-4E85-95FD-AFE413E853CC"
+        },
+        {
+          "defKey": "created_by",
+          "defName": "创建人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "4697D3DC-2C47-43C0-9F34-F1213486A880"
+        },
+        {
+          "defKey": "created_time",
+          "defName": "创建时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "757328C0-75E7-4B61-ADEB-B68AF75FF509"
+        },
+        {
+          "defKey": "updated_by",
+          "defName": "更新人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "46447733-17C1-4F6E-8A90-4A8CCF2393CA"
+        },
+        {
+          "defKey": "updated_time",
+          "defName": "更新时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "ECAAA60B-7810-4F55-907D-20399D074389"
+        }
+      ],
+      "correlations": [],
+      "indexes": []
+    },
+    {
+      "id": "18631D92-2DBC-4DAC-9928-790911A29B7E",
+      "defKey": "lowcode_form",
+      "defName": "表单",
+      "comment": "",
+      "properties": {},
+      "nameTemplate": "{defKey}[{defName}]",
+      "headers": [
+        {
+          "freeze": false,
+          "refKey": "hideInGraph",
+          "hideInGraph": true
+        },
+        {
+          "freeze": true,
+          "refKey": "defKey",
+          "hideInGraph": false
+        },
+        {
+          "freeze": true,
+          "refKey": "defName",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "primaryKey",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "notNull",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "autoIncrement",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "domain",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "type",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "len",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "scale",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "comment",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "refDict",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "defaultValue",
+          "hideInGraph": true
+        },
+        {
+          "freeze": false,
+          "refKey": "isStandard",
+          "hideInGraph": false
+        },
+        {
+          "freeze": false,
+          "refKey": "uiHint",
+          "hideInGraph": true
+        }
+      ],
+      "fields": [
+        {
+          "defKey": "form_id",
+          "defName": "表单ID",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "5D89B615-DC2C-44A3-BC9F-B02982477302"
+        },
+        {
+          "defKey": "name",
+          "defName": "表单中文名称",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "DAEB67DC-0801-446B-9A21-667BC19E8417"
+        },
+        {
+          "defKey": "category",
+          "defName": "表单类别",
+          "comment": "",
+          "type": "int",
+          "len": 10,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "830E3D8C-B17F-471C-8FAA-D102179D9B86",
+          "domain": "",
+          "id": "0BECF04D-50B0-4062-8882-A17842636DDE"
+        },
+        {
+          "defKey": "icon",
+          "defName": "图标",
+          "comment": "",
+          "type": "VARCHAR",
+          "len": 10,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "A385AA35-3FCD-4FB1-A003-79B548A0EBE9"
+        },
+        {
+          "defKey": "version",
+          "defName": "版本号",
+          "comment": "V1",
+          "type": "VARCHAR",
+          "len": 30,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "",
+          "id": "8D4D2D84-6A90-49C1-9CD6-A1006426E9F8"
+        },
+        {
+          "defKey": "tenant_id",
+          "defName": "租户号",
+          "comment": "",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "refDict": "",
+          "uiHint": "",
+          "id": "9D433894-C96E-4404-9B77-74010767CA99"
+        },
+        {
+          "defKey": "created_by",
+          "defName": "创建人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "65C92602-C79A-48D5-9A96-5B24D1EC0479"
+        },
+        {
+          "defKey": "created_time",
+          "defName": "创建时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "3F4BD5DA-173C-49E7-A0A2-0E7E90DABF4E"
+        },
+        {
+          "defKey": "updated_by",
+          "defName": "更新人",
+          "comment": "",
+          "domain": "9E5086F4-0FFB-4297-83D9-F75619B12667",
+          "type": "",
+          "len": 32,
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "DFC962C3-BA50-4654-8AC0-070AC4C559A0"
+        },
+        {
+          "defKey": "updated_time",
+          "defName": "更新时间",
+          "comment": "",
+          "domain": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": false,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "A38248D0-1443-417D-84F5-1B4E1DEDFCAD"
+        }
+      ],
+      "correlations": [],
+      "indexes": []
+    }
+  ],
+  "views": [],
+  "dicts": [
+    {
+      "defKey": "form_category",
+      "defName": "表单类型",
+      "sort": "",
+      "intro": "",
+      "id": "830E3D8C-B17F-471C-8FAA-D102179D9B86",
+      "items": [
+        {
+          "defKey": "1",
+          "defName": "普通表单",
+          "sort": "",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "784A7BC5-61F0-4762-AF8B-3719FDA0919D"
+        },
+        {
+          "defKey": "2",
+          "defName": "流程表单",
+          "sort": "",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "AECDAE4F-5B52-4321-9C81-09750F8D7DB1"
+        },
+        {
+          "defKey": "3",
+          "defName": "看板报表",
+          "sort": "",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "85E85094-5DE9-45E9-9960-DAF3BB393BD5"
+        },
+        {
+          "defKey": "4",
+          "defName": "自定义表单",
+          "sort": "",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "96745480-54BD-4B2C-8238-852F65468FB2"
+        }
+      ]
+    }
+  ],
+  "viewGroups": [],
+  "dataTypeMapping": {
+    "referURL": "",
+    "mappings": [
+      {
+        "defKey": "string",
+        "defName": "字串",
+        "id": "BF16991C-5289-400A-BE0A-749294181BA2",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "VARCHAR",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "VARCHAR2",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "VARCHAR",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "VARCHAR",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "VARCHAR",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "VARCHAR2",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "VARCHAR",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "VARCHAR",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "STRING",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "String",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "string",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "TEXT"
+      },
+      {
+        "defKey": "double",
+        "defName": "小数",
+        "id": "998D53BF-D392-4BC5-A27C-718A2956B052",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "DECIMAL",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "DECIMAL",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "DECIMAL",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "NUMERIC",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "DECIMAL",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "DECIMAL",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "NUMERIC",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "NUMERIC",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "DOUBLE",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "Double",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "decimal",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "REAL"
+      },
+      {
+        "defKey": "int",
+        "defName": "整数",
+        "id": "052AF22B-FD0A-4F6C-A717-141B8B18AD72",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "INT",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "INT",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "INT",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "INTEGER",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "INT",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "INTEGER",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "INTEGER",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "INT4",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "INT",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "Integer",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "int",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "INTEGER"
+      },
+      {
+        "defKey": "date",
+        "defName": "日期",
+        "id": "33809C46-46B9-44E2-B16F-765599E44F0E",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "DATETIME",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "DATE",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "DATETIME",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "DATE",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "DATE",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "DATE",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "DATE",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "DATE",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "DATETIME",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "Date",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "DateTime",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "NUMERIC"
+      },
+      {
+        "defKey": "bytes",
+        "defName": "二进制",
+        "id": "7A245A2A-2230-435B-BC8B-E45E362C488B",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "BLOB",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "BLOB",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "VARBINARY",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "BYTEA",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "BLOB",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "BLOB",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "BYTEA",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "BYTEA",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "BINARY",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "byte[]",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "byte[]",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "NONE"
+      },
+      {
+        "defKey": "largeText",
+        "defName": "大文本",
+        "id": "59D6F87E-AE48-4CAB-A68C-07FC00A2D5CC",
+        "9D718771-0A06-4FAB-A02B-DFD277226DE9": "TEXT",
+        "5EC7CFB9-2F00-4F69-8122-52DBA84E3FEF": "CLOB",
+        "6F22B2F0-7DF3-4F4E-96F3-D02A372A16F2": "TEXT",
+        "BCCC33D4-7BA4-40B9-8482-149BD0EF1478": "TEXT",
+        "2C9BBD3D-6453-44DD-BFE7-5379D14F3F4B": "CLOB",
+        "103A5DA1-FF48-4A6B-9DC2-28B6450F110E": "CLOB",
+        "44596C48-A91F-416E-A210-E7464A1DC34A": "TEXT",
+        "C2221CEB-EE89-4CA5-B2BA-4DB06F6C8F93": "TEXT",
+        "DA8FE288-1A25-4700-B7B0-E16BC9DAF3FA": "STRING",
+        "094E0025-AA6D-4A76-896A-B6E5D97488AD": "String",
+        "9850638E-622C-4FA9-AD17-DF2FA1D1826D": "string",
+        "F0D16207-16CD-41B1-B6FA-90C18B591E8C": "TEXT"
+      }
+    ]
+  },
+  "domains": [
+    {
+      "defKey": "DefaultString",
+      "defName": "默认字串",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": 255,
+      "scale": "",
+      "uiHint": "",
+      "id": "804FD05B-705B-457E-B3F7-E7FD62BF66CA"
+    },
+    {
+      "defKey": "IdOrKey",
+      "defName": "主键标识",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": 32,
+      "scale": "",
+      "uiHint": "",
+      "id": "9E5086F4-0FFB-4297-83D9-F75619B12667"
+    },
+    {
+      "defKey": "Name",
+      "defName": "名称",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": 90,
+      "scale": "",
+      "uiHint": "",
+      "id": "F699DD0E-1176-43D9-934F-0A0D50EAEF43"
+    },
+    {
+      "defKey": "Int",
+      "defName": "整数",
+      "applyFor": "052AF22B-FD0A-4F6C-A717-141B8B18AD72",
+      "len": "",
+      "scale": "",
+      "uiHint": "",
+      "id": "F7DE1BB7-D465-4961-988F-01C8B833FDEB"
+    },
+    {
+      "defKey": "Double",
+      "defName": "小数",
+      "applyFor": "998D53BF-D392-4BC5-A27C-718A2956B052",
+      "len": 24,
+      "scale": 6,
+      "uiHint": "",
+      "id": "9A7B27D1-AF0B-469E-86A9-61A03F9B080A"
+    },
+    {
+      "defKey": "Money",
+      "defName": "金额",
+      "applyFor": "998D53BF-D392-4BC5-A27C-718A2956B052",
+      "len": 24,
+      "scale": 6,
+      "uiHint": "",
+      "id": "FCFFB136-71F5-49A2-A43D-DF9751F1E9CD"
+    },
+    {
+      "defKey": "DateTime",
+      "defName": "日期时间",
+      "applyFor": "33809C46-46B9-44E2-B16F-765599E44F0E",
+      "len": "",
+      "scale": "",
+      "uiHint": "",
+      "id": "ECD74C4F-1D9F-4636-B42A-60A9EAC04771"
+    },
+    {
+      "defKey": "YesNo",
+      "defName": "是否",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": "1",
+      "scale": "",
+      "uiHint": "",
+      "id": "9FB9B11C-1A5A-4AAD-81DD-F24B2A508117"
+    },
+    {
+      "defKey": "Dict",
+      "defName": "数据字典",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": "32",
+      "scale": "",
+      "uiHint": "",
+      "id": "344FBAFB-FC60-4E35-8EA6-CD68E4AD6A49"
+    },
+    {
+      "defKey": "DescText",
+      "defName": "描述文本",
+      "applyFor": "BF16991C-5289-400A-BE0A-749294181BA2",
+      "len": "900",
+      "scale": "",
+      "uiHint": "",
+      "id": "ECDAD496-E831-4F14-AA55-D84803BE9CA1"
+    }
+  ],
+  "diagrams": [],
+  "standardFields": []
+}

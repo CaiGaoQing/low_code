@@ -2,15 +2,17 @@ package com.techhf.design.dsl;
 
 import com.alibaba.fastjson.JSONObject;
 
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Node;
+import com.techhf.design.base.FormSchema;
+import com.techhf.design.domain.BasicsFormSchema;
 import com.techhf.design.dsl.model.Column;
 import com.techhf.design.dsl.model.FormInfo;
 import com.techhf.design.dsl.model.Schema;
+import com.techhf.design.util.UuidUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -26,14 +28,10 @@ public class DefaultJsonResolver extends AbstractResolve{
 
     private final static String propertiesKey ="properties";
 
-    /**
-     * json信息
-     */
-    private Schema schema;
 
-   public DefaultJsonResolver(Schema schema) {
-      this.schema=schema;
-   }
+    public DefaultJsonResolver(Schema schema) {
+        super.schema=schema;
+    }
 
     public DefaultJsonResolver(String schemaInfo) {
         try {
@@ -48,31 +46,92 @@ public class DefaultJsonResolver extends AbstractResolve{
      * 获取约束信息 json
      * @return 约束信息 json
      */
+    @Override
     public Schema getSchema(){
       return schema;
-    }
-
-    /**
-     * 获取表单的所有列
-     * @return  表单的所有列
-     */
-    public List<Column> getColumn() {
-        JSONObject schema = this.schema.getSchema();
-        JSONObject properties = schema.getJSONObject("properties");
-        Set<String> keys = properties.keySet();
-        ArrayList<Column> columns = new ArrayList<>();
-        getKeys(properties,keys,columns);
-        return columns;
     }
 
     /**
      * 获取表单信息
      * @return 表单信息
      */
+    @Override
     public FormInfo getFormInfo(){
         JSONObject schema = this.schema.getSchema();
         JSONObject form = schema.getJSONObject("form");
         return JSONObject.parseObject(form.toJSONString(),FormInfo.class);
+    }
+
+
+    /**
+     * 节点转换为class对象，
+     * @param node 节点对象
+     * @param clazz 要转的对象
+     * @return 对象
+     */
+    @Override
+     <T> T nodeParseClass(JSONObject node,Class<T> clazz) {
+        return JSONObject.parseObject(node.toJSONString(),clazz);
+    }
+
+    @Override
+    DefaultJsonResolver transformKey(Map<String, String> transformKey) {
+        JSONObject schema = this.schema.getSchema();
+        JSONObject properties = schema.getJSONObject(propertiesKey);
+        transRecurrenceNodeKey(properties,transformKey);
+        schema.put(propertiesKey,properties);
+        this.schema.setSchema(schema);
+        return this;
+    }
+
+    @Override
+    Schema transformKey(Schema data,Map<String, String> transformKey) {
+        JSONObject schema = data.getSchema();
+        JSONObject properties = schema.getJSONObject(propertiesKey);
+        transRecurrenceNodeKey(properties,transformKey);
+        schema.put(propertiesKey,properties);
+        data.setSchema(schema);
+        return data;
+    }
+
+    @Override
+    JSONObject classParseNode(Object data) {
+        String jsonString = JSONObject.toJSONString(data);
+        return JSONObject.parseObject(jsonString);
+    }
+
+    @Override
+    public <T>  List<T> getNode(Class<T> clazz) {
+        JSONObject schema = this.schema.getSchema();
+        JSONObject properties = schema.getJSONObject(propertiesKey);
+        ArrayList list = new ArrayList<>();
+        getProperties(properties,properties.keySet(),"",list,clazz);
+        return list;
+    }
+
+    /**
+     * 修改表单字段
+     * @param key 字段key
+     * @return 返回添加后的json
+     */
+    @Override
+    public Schema updateSchemaKey(String key, Object value){
+        //相同的key 覆盖值
+        return this.addFormKey(key,value);
+    }
+
+    /**
+     * 添加表单字段
+     * @param key 字段key
+     * @param value 字段Value
+     * @return 返回添加后的json
+     */
+    @Override
+    public Schema addFormKey(String key, Object value){
+        JSONObject formInfo = this.schema.getForm();
+        formInfo.put(key,value);
+        this.schema.setForm(formInfo);
+        return this.schema;
     }
 
     /**
@@ -81,7 +140,8 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @param value 字段Value
      * @return 返回添加后的json
      */
-    public Schema addSchemaKeyValue(String key,Object value){
+    @Override
+    public Schema addNodeKey(String key, Object value){
         JSONObject schema = this.schema.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         //递归添加列字段属性
@@ -92,11 +152,12 @@ public class DefaultJsonResolver extends AbstractResolve{
     }
 
     /**
-     * 删除列字段
+     * 删除每个节点的key
      * @param key 字段key
      * @return 返回添加后的json
      */
-    public Schema removeSchemaKey(String key){
+    @Override
+    public Schema removeNodeKey(String key){
         JSONObject schema = this.schema.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         //递归添加列字段属性
@@ -107,26 +168,26 @@ public class DefaultJsonResolver extends AbstractResolve{
     }
 
     /**
-     * 修改列字段
-     * @param key 字段key
-     * @return 返回添加后的json
+     * 递归转换key
+     * @param properties 节点信息
+     * @param keyMap   转换信息
      */
-    public Schema updateSchemaKey(String key,Object value){
-        //相同的key 覆盖值
-        return this.addSchemaKeyValue(key,value);
-    }
-
-    /**
-     * 添加表单字段
-     * @param key 字段key
-     * @param value 字段Value
-     * @return 返回添加后的json
-     */
-    public Schema addFormKeyValue(String key,Object value){
-        JSONObject formInfo = this.schema.getForm();
-        formInfo.put(key,value);
-        this.schema.setForm(formInfo);
-        return this.schema;
+    private static void transRecurrenceNodeKey(JSONObject properties,Map<String,String> keyMap){
+        for (String key : properties.keySet()) {
+            JSONObject node = properties.getJSONObject(key);
+            if (node==null){
+                continue;
+            }
+            for (Map.Entry<String, String> entry : keyMap.entrySet()) {
+                String oldNodeKey = entry.getKey();
+                String nodeKey = entry.getValue();
+                node.put(nodeKey,node.get(oldNodeKey));
+                node.remove(oldNodeKey);
+            }
+            if (node.getJSONObject(propertiesKey) != null) {
+                transRecurrenceNodeKey(node.getJSONObject(propertiesKey), keyMap);
+            }
+        }
     }
 
     /**
@@ -189,12 +250,39 @@ public class DefaultJsonResolver extends AbstractResolve{
         }
     }
 
+    /**
+     *  递归获取字段名称
+     * @param properties json属性
+     */
+    private <T> void  getProperties(JSONObject properties, Set<String> keys, String parentId,List<T> formSchemaArray,Class<T> clazz) {
+        for (String key : keys) {
+            JSONObject node = properties.getJSONObject(key);
+            String uuid = UuidUtil.getUuid();
+            node.put("schemaId",uuid);
+            node.put("parentId",parentId);
+            T formSchema = nodeParseClass(node, clazz);
+            formSchemaArray.add(formSchema);
+            if (node.getJSONObject(propertiesKey) != null) {
+                Set<String> ch = node.getJSONObject(propertiesKey).keySet();
+                getProperties(node.getJSONObject(propertiesKey), ch,uuid,formSchemaArray,clazz);
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
         String json="{\"form\":{\"labelCol\":6,\"wrapperCol\":12},\"schema\":{\"type\":\"object\",\"properties\":{\"9tbndobkfav\":{\"type\":\"number\",\"title\":\"Rate\",\"x-decorator\":\"FormItem\",\"x-component\":\"Rate\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"9tbndobkfav\",\"x-index\":0},\"9e64xxuipyv\":{\"title\":\"Password\",\"x-decorator\":\"FormItem\",\"x-component\":\"Password\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"9e64xxuipyv\",\"x-index\":1},\"e6srgv2k3wi\":{\"title\":\"Transfer\",\"x-decorator\":\"FormItem\",\"x-component\":\"Transfer\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"e6srgv2k3wi\",\"x-index\":2},\"ta2ezeiklk7\":{\"type\":\"Array<object>\",\"title\":\"Upload\",\"x-decorator\":\"FormItem\",\"x-component\":\"Upload\",\"x-component-props\":{\"textContent\":\"Upload\"},\"x-validator\":[],\"x-decorator-props\":{},\"x-designable-id\":\"ta2ezeiklk7\",\"x-index\":3},\"qfs9rs2gjt7\":{\"type\":\"boolean\",\"title\":\"Switch\",\"x-decorator\":\"FormItem\",\"x-component\":\"Switch\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"qfs9rs2gjt7\",\"x-index\":4},\"qiv2r43tvad\":{\"type\":\"string[]\",\"title\":\"DateRangePicker\",\"x-decorator\":\"FormItem\",\"x-component\":\"DatePicker.RangePicker\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"qiv2r43tvad\",\"x-index\":5},\"u20wpfxwmjc\":{\"type\":\"void\",\"x-component\":\"Card\",\"x-component-props\":{\"title\":\"Title\"},\"x-designable-id\":\"u20wpfxwmjc\",\"properties\":{\"xt983k5rof1\":{\"type\":\"string\",\"title\":\"Input\",\"x-decorator\":\"FormItem\",\"x-component\":\"Input\",\"x-validator\":[],\"x-component-props\":{},\"x-decorator-props\":{},\"x-designable-id\":\"xt983k5rof1\",\"x-index\":0}},\"x-index\":6}},\"x-designable-id\":\"mzeanr6wdc5\"}}";
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("test","111");
-        jsonObject.put("test","222");
-        Schema schema = new DefaultJsonResolver(json).addSchemaKeyValue("test", jsonObject);
-        System.out.println(JSONObject.toJSONString(schema));
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("test","111");
+//        jsonObject.put("test","222");
+        HashMap<String, String> objectObjectHashMap = new HashMap<>();
+        objectObjectHashMap.put("x-decorator","x_decorator");
+//        Schema schema = new DefaultJsonResolver(json).addFormKey("test", jsonObject);
+        List<JSONObject> node = new DefaultJsonResolver(json).transformKey(objectObjectHashMap).getNode(JSONObject.class);
+
+        for (JSONObject basicsFormSchema : node) {
+            System.out.println(basicsFormSchema);
+        }
+
     }
 }
