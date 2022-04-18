@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 @Data
-public class Schema {
+public class FormRule {
 
     private JSONObject form;
 
     private JSONObject schema;
-
 }

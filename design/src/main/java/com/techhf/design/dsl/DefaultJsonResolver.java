@@ -2,12 +2,8 @@ package com.techhf.design.dsl;
 
 import com.alibaba.fastjson.JSONObject;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Node;
-import com.techhf.design.base.FormSchema;
-import com.techhf.design.domain.BasicsFormSchema;
 import com.techhf.design.dsl.model.Column;
-import com.techhf.design.dsl.model.FormInfo;
-import com.techhf.design.dsl.model.Schema;
+import com.techhf.design.dsl.model.FormRule;
 import com.techhf.design.util.UuidUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +20,22 @@ import java.util.*;
  */
 @Data
 @Slf4j
-public class DefaultJsonResolver extends AbstractResolve{
+public class DefaultJsonResolver extends AbstractResolve<FormRule>{
 
     private final static String propertiesKey ="properties";
 
+    /**
+     * json信息
+     */
+    public FormRule formRule;
 
-    public DefaultJsonResolver(Schema schema) {
-        super.schema=schema;
+    public DefaultJsonResolver(FormRule formRule) {
+        this.formRule =formRule;
     }
 
-    public DefaultJsonResolver(String schemaInfo) {
+    public DefaultJsonResolver(String formRuleInfo) {
         try {
-            schema = JSONObject.parseObject(schemaInfo, Schema.class);
+            formRule = JSONObject.parseObject(formRuleInfo, FormRule.class);
         }catch (Exception e){
             log.error("解析Json Schema 失败 请检查格式:{}",e.getMessage());
         }
@@ -47,21 +47,24 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @return 约束信息 json
      */
     @Override
-    public Schema getSchema(){
-      return schema;
+    public FormRule getFormRule(){
+      return formRule;
+    }
+
+    public  <T> T getFormInfo(Class<T> clazz){
+        JSONObject form = formRule.getForm();
+        return JSONObject.parseObject(form.toJSONString(),clazz);
     }
 
     /**
      * 获取表单信息
      * @return 表单信息
      */
-    @Override
-    public FormInfo getFormInfo(){
-        JSONObject schema = this.schema.getSchema();
-        JSONObject form = schema.getJSONObject("form");
-        return JSONObject.parseObject(form.toJSONString(),FormInfo.class);
-    }
-
+//    public FormRule getFormInfo(){
+//        JSONObject schema = this.formRule.getSchema();
+//        JSONObject form = schema.getJSONObject("form");
+//        return JSONObject.parseObject(form.toJSONString(),FormInfo.class);
+//    }
 
     /**
      * 节点转换为class对象，
@@ -71,27 +74,28 @@ public class DefaultJsonResolver extends AbstractResolve{
      */
     @Override
      <T> T nodeParseClass(JSONObject node,Class<T> clazz) {
+        log.debug("nodeParseClass,data:{}",node.toJSONString());
         return JSONObject.parseObject(node.toJSONString(),clazz);
     }
 
     @Override
     DefaultJsonResolver transformKey(Map<String, String> transformKey) {
-        JSONObject schema = this.schema.getSchema();
+        JSONObject schema = this.formRule.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         transRecurrenceNodeKey(properties,transformKey);
         schema.put(propertiesKey,properties);
-        this.schema.setSchema(schema);
+        this.formRule.setSchema(schema);
         return this;
     }
 
     @Override
-    Schema transformKey(Schema data,Map<String, String> transformKey) {
-        JSONObject schema = data.getSchema();
+    FormRule transformKey(FormRule formRule, Map<String, String> transformKey) {
+        JSONObject schema = formRule.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         transRecurrenceNodeKey(properties,transformKey);
         schema.put(propertiesKey,properties);
-        data.setSchema(schema);
-        return data;
+        formRule.setSchema(schema);
+        return formRule;
     }
 
     @Override
@@ -102,7 +106,7 @@ public class DefaultJsonResolver extends AbstractResolve{
 
     @Override
     public <T>  List<T> getNode(Class<T> clazz) {
-        JSONObject schema = this.schema.getSchema();
+        JSONObject schema = this.formRule.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         ArrayList list = new ArrayList<>();
         getProperties(properties,properties.keySet(),"",list,clazz);
@@ -115,7 +119,7 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @return 返回添加后的json
      */
     @Override
-    public Schema updateSchemaKey(String key, Object value){
+    public FormRule updateSchemaKey(String key, Object value){
         //相同的key 覆盖值
         return this.addFormKey(key,value);
     }
@@ -127,11 +131,11 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @return 返回添加后的json
      */
     @Override
-    public Schema addFormKey(String key, Object value){
-        JSONObject formInfo = this.schema.getForm();
+    public FormRule addFormKey(String key, Object value){
+        JSONObject formInfo = this.formRule.getForm();
         formInfo.put(key,value);
-        this.schema.setForm(formInfo);
-        return this.schema;
+        this.formRule.setForm(formInfo);
+        return this.formRule;
     }
 
     /**
@@ -141,14 +145,14 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @return 返回添加后的json
      */
     @Override
-    public Schema addNodeKey(String key, Object value){
-        JSONObject schema = this.schema.getSchema();
+    public FormRule addNodeKey(String key, Object value){
+        JSONObject schema = this.formRule.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         //递归添加列字段属性
         addRecurrenceKeyValue(properties,key,value);
         schema.put(propertiesKey,properties);
-        this.schema.setSchema(schema);
-        return  this.schema;
+        this.formRule.setSchema(schema);
+        return  this.formRule;
     }
 
     /**
@@ -157,14 +161,14 @@ public class DefaultJsonResolver extends AbstractResolve{
      * @return 返回添加后的json
      */
     @Override
-    public Schema removeNodeKey(String key){
-        JSONObject schema = this.schema.getSchema();
+    public FormRule removeNodeKey(String key){
+        JSONObject schema = this.formRule.getSchema();
         JSONObject properties = schema.getJSONObject(propertiesKey);
         //递归添加列字段属性
         removeRecurrenceKey(properties,key);
         schema.put(propertiesKey,properties);
-        this.schema.setSchema(schema);
-        return this.schema;
+        this.formRule.setSchema(schema);
+        return this.formRule;
     }
 
     /**
@@ -283,6 +287,5 @@ public class DefaultJsonResolver extends AbstractResolve{
         for (JSONObject basicsFormSchema : node) {
             System.out.println(basicsFormSchema);
         }
-
     }
 }

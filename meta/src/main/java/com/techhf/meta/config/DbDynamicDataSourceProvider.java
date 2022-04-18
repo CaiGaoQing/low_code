@@ -37,10 +37,8 @@ public class DbDynamicDataSourceProvider implements ApplicationContextAware {
                 ResultSet rs = statement.executeQuery(MetaSqlConstant.DATASOURCE);
                 while (rs.next()) {
                     String id = rs.getString("id");
-                    String appId = rs.getString("appId");
-                    String name = rs.getString("name");
-                    String username = rs.getString("username");
-                    String password = rs.getString("password");
+                    String username = rs.getString("user_name");
+                    String password = rs.getString("pass_word");
                     String url = rs.getString("url");
                     String driver = rs.getString("driver");
                     DataSourceProperty property = new DataSourceProperty();
@@ -48,7 +46,7 @@ public class DbDynamicDataSourceProvider implements ApplicationContextAware {
                     property.setPassword(password);
                     property.setUrl(url);
                     property.setDriverClassName(driver);
-                    map.put(DataSourceUtil.getSourceId(appId,id), property);
+                    map.put(DataSourceUtil.getSourceId(id), property);
                 }
                 log.info("=========加载数据源结束=========");
                 return map;

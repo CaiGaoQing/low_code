@@ -1,18 +1,24 @@
-package com.techhf.design.domain;
+package com.techhf.design.domain.basics;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.techhf.design.base.FormSchema;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 基础表单组件定义
  */
 @Data
 @TableName("lowcode_basics_form_schema")
-public class BasicsFormSchema extends FormSchema {
+public class BasicsNode extends FormSchema {
+
+    /** 子组件 */
+    @TableField(exist = false)
+    private List<BasicsNode> properties;
 
     /** 组件定义ID */
     @TableId
@@ -89,6 +95,5 @@ public class BasicsFormSchema extends FormSchema {
 
     /** 更新时间 */
     private Date updatedTime ;
-
 
 }

@@ -5,7 +5,7 @@ public class MetaSqlConstant {
     /**
      * 查詢數據源SQL
      */
-    public static  final  String DATASOURCE="select id , app_id as appId,name,username,password,url,driver from t_data_source";
+    public static  final  String DATASOURCE="select source_id , name,user_name,pass_word,url,driver from lowcode_datasource";
 
     /**
      * 查詢數據源下面有哪些表结构
